@@ -34,5 +34,31 @@ export const getAllTablets = async (req, res) => {
     }
 }
 
+export const deleteProductController = async (req, res) => {
+    try{
+        const {product} = req.params;
+        const deletedProduct = await productService.deleteProduct(product);
+
+        if(!deletedProduct){
+            return res.status(404).json({
+                message: "Product not available"
+            })
+        }
+
+        res.status(200).json({
+            success:true,
+            message: `${product} product has been removed successfully`,
+            details: deletedProduct
+        })
+
+
+    }catch(err){
+        res.status(500).json({
+            success: false,
+            error: err.message
+        })
+    }
+}
+
 
 
