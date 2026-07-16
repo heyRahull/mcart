@@ -62,3 +62,19 @@ export const addToCart = async (details) => {
     };
   }
 };
+
+export const updateCartProducts = async (username, productsInCart) => {
+
+  const cart = await Cart.findOne({username, statusOfCart: 'Open'});
+
+  if(!cart){
+    return null;
+  }
+
+  cart.productsInCart = productsInCart;
+  cart.dateOfModification = new Date().toLocaleDateString('en-GB');
+
+  await cart.save();
+  return cart;
+
+}

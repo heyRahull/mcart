@@ -2,6 +2,7 @@ import {
   getAllUsersCart,
   getPerUserCart,
   addToCart,
+  updateCartProducts
 } from "../services/cartService.js";
 
 export const getAllUsersCartController = async (req, res) => {
@@ -60,3 +61,31 @@ export const addToCartController = async (req, res) => {
     });
   }
 };
+
+export const updateCartController = async (req, res) => {
+  try{
+    const {username } = req.params;
+    const {productsInCart} = req.body;
+
+    const updatedCart = await updateCartProducts(username, productsInCart);
+
+    if(!updatedCart){
+      res.status(200).json({
+        message: "User's cart is not available",
+        
+      })
+    }
+
+    res.status(200).json({
+      message: `CartID: ${updatedCart.cartId} updated`,
+      details: updatedCart
+    })
+
+
+  }catch(err){
+    res.status(500).json({
+      success: false,
+      error: err.message
+    })
+  }
+}
